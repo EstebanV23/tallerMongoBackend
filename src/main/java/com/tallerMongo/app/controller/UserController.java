@@ -50,7 +50,7 @@ public class UserController {
 
     boolean uniqueUser = userService.uniqueUser(userRequest);
     if (!uniqueUser) {
-      ErrorReponseModel error = new ErrorReponseModel("User already exist");
+      ErrorReponseModel error = new ErrorReponseModel("This document already account");
       return ErrorReponseModel.BAD_REQUEST(error);
     }
 
