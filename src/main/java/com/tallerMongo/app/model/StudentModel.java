@@ -36,6 +36,15 @@ public class StudentModel {
   private Integer softwareDesign;
   private Integer softwareDesignLevel;
   private String englishPosition;
+  private boolean denied;
+
+  public boolean isDenied() {
+    return denied;
+  }
+
+  public void setDenied(boolean denied) {
+    this.denied = denied;
+  }
 
   public ObjectId getId() {
     return id;
@@ -231,7 +240,11 @@ public class StudentModel {
 
 
   public boolean allDataComplete () {
-    return this.registerNumber != null && this.saberProScore != null && this.saberProScoreLevel != null && this.writtenCommunication != null && this.writtenCommunicationLevel != null && this.quantitativeReasoning != null && this.quantitativeReasoningLevel != null && this.readingCritical != null && this.readingCriticalLevel != null && this.citizenshipCompetence != null && this.citizenshipCompetenceLeve != null && this.english != null && this.englishLevel != null && this.engineeringProjectFormulation != null && this.engineeringProjectFormulationLevel != null && this.mathematicsStatistics != null && this.mathematicsStatisticsLevel != null && this.softwareDesign != null && this.softwareDesignLevel != null && this.englishPosition != null;
+    return this.registerNumber != null && this.saberProScore != null && this.writtenCommunication != null && this.quantitativeReasoning != null && this.readingCritical != null && this.citizenshipCompetence != null && this.english != null && this.engineeringProjectFormulation != null && this.mathematicsStatistics != null && this.softwareDesign != null;
+  }
+
+  public boolean personalInfoComplete () {
+    return this.middleName != null && this.lastSurname != null && this.phone != null;
   }
 
   @Override

@@ -65,10 +65,14 @@ public class UserController {
   }
 
   @PatchMapping("/update/{id}")
-  public ResponseEntity<UserModel> updateUser (@PathVariable ObjectId id, @RequestBody Map<String, Object> body) {
+  public ResponseEntity updateUser (@PathVariable ObjectId id, @RequestBody Map<String, Object> body) {
     ObjectMapper objectMapper = new ObjectMapper();
     UserModel userRequest = objectMapper.convertValue(body, UserModel.class);
     UserModel user = userService.updateUser(id, userRequest);
+    if (user == null) {
+      ErrorReponseModel error = new ErrorReponseModel("This email already account");
+      return ErrorReponseModel.NOT_FOUND(error);
+    }
     return ResponseEntity.status(HttpStatus.OK).body(user);
   }
 
@@ -87,7 +91,7 @@ public class UserController {
     ObjectMapper mapper = new ObjectMapper();
     UserModel userRequest = mapper.convertValue(body, UserModel.class);
     String email = userRequest.getEmail();
-    String password = userRequest.getPassword();
+    String password = userRequest.passwordUser();
     UserModel user = userService.loginUser(email, password);
     if (user == null) {
       ErrorReponseModel error = new ErrorReponseModel("Email or password incorrect");

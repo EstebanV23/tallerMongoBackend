@@ -82,7 +82,7 @@ public class UserModel {
     this.email = email;
   }
 
-  public String getPassword() {
+  public String passwordUser() {
     return password;
   }
 

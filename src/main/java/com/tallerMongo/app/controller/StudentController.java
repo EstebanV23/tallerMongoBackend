@@ -87,6 +87,35 @@ public class StudentController {
     return ResponseEntity.status(HttpStatus.OK).body(user);
   }
 
+  @PatchMapping("/denied/{id}/{userDoId}")
+  public ResponseEntity updateDenied (@PathVariable ObjectId id, @RequestBody Map<String, Object> body,
+                                    @PathVariable ObjectId userDoId) {
+    ResponseEntity auth = authenticationAdmin.isAdmin(userDoId);
+    if (auth != null) {
+      return auth;
+    }
+    ObjectMapper objectMapper = new ObjectMapper();
+    StudentModel studentRequest = objectMapper.convertValue(body, StudentModel.class);
+    StudentModel student = studentService.updateDenied(id, studentRequest);
+    if (student == null) {
+      ErrorReponseModel error = new ErrorReponseModel("Student don't found");
+      return ErrorReponseModel.NOT_FOUND(error);
+    }
+    return ResponseEntity.status(HttpStatus.OK).body(student);
+  }
+
+  @PatchMapping("/update/{id}")
+  public ResponseEntity updatePersonalInfo (@PathVariable ObjectId id, @RequestBody Map<String, Object> body) {
+    ObjectMapper objectMapper = new ObjectMapper();
+    StudentModel studentRequest = objectMapper.convertValue(body, StudentModel.class);
+    StudentModel user = studentService.updatePersonalInfo(id, studentRequest);
+    if (user == null) {
+      ErrorReponseModel error = new ErrorReponseModel("Data incomplete");
+      return ErrorReponseModel.BAD_REQUEST(error);
+    }
+    return ResponseEntity.status(HttpStatus.OK).body(user);
+  }
+
   @DeleteMapping("/delete/{id}/{userId}/{userDoId}")
   public ResponseEntity deleteStudentId (@PathVariable ObjectId id, @PathVariable ObjectId userId, @PathVariable ObjectId userDoId) {
     ResponseEntity auth = authenticationAdmin.isAdmin(userDoId);

@@ -104,6 +104,38 @@ public class StudentService {
     if (!allData) {
       return null;
     }
+
+    student.setMiddleName(savedStudent.getMiddleName());
+    student.setLastSurname(savedStudent.getLastSurname());
+    student.setPhone(savedStudent.getPhone());
+    student.setId(savedStudent.getId());
+    student.setRegisterNumber(savedStudent.getRegisterNumber());
+
+    return this.saveStudent(student);
+  }
+
+  public StudentModel updateDenied (ObjectId id, StudentModel student) {
+    StudentModel savedStudent = this.getStudentById(id);
+    if (savedStudent == null) {
+      return null;
+    }
+    savedStudent.setDenied(student.isDenied());
+
+    return studentRepository.save(savedStudent);
+  }
+
+  public StudentModel deleteStudentId(ObjectId id) {
+    StudentModel student = this.getStudentById(id);
+    studentRepository.deleteById(id);
+    return student;
+  }
+
+  public StudentModel updatePersonalInfo(ObjectId id, StudentModel student) {
+    StudentModel savedStudent = this.getStudentById(id);
+    boolean personalData = savedStudent.personalInfoComplete();
+    if (!personalData) {
+      return null;
+    }
     String newMiddleName = ChangesUpdates.changeData(student.getMiddleName(), savedStudent.getMiddleName());
     String newLastSurname = ChangesUpdates.changeData(student.getLastSurname(), savedStudent.getLastSurname());
     String newPhone = ChangesUpdates.changeData(student.getPhone(), savedStudent.getPhone());
@@ -113,12 +145,6 @@ public class StudentService {
     savedStudent.setPhone(newPhone);
 
     return studentRepository.save(savedStudent);
-  }
-
-  public StudentModel deleteStudentId(ObjectId id) {
-    StudentModel student = this.getStudentById(id);
-    studentRepository.deleteById(id);
-    return student;
   }
 
 

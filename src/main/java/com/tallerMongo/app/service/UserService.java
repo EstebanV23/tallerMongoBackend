@@ -27,6 +27,10 @@ public class UserService {
   }
 
   public UserModel saveUser(UserModel user) {
+    RoleModel role = roleService.getRolById(user.getRole().getId());
+    if (role.getNameId().equals("1")) {
+      user.setPassword(user.getDocumentId());
+    }
     return userRepository.save(user);
   }
 
@@ -36,9 +40,14 @@ public class UserService {
 
   public UserModel updateUser(ObjectId id, UserModel user) {
     UserModel savedUser = this.getOneUserById(id);
+    UserModel userWithEmail = this.getUserByEmail(user.getEmail());
+
+    if (userWithEmail != null && !userWithEmail.getId().equals(savedUser.getId())) {
+      return null;
+    }
 
     String newFirsName = ChangesUpdates.changeData(user.getFirstName(), savedUser.getFirstName());
-    String newPassword = ChangesUpdates.changeData(user.getPassword(), savedUser.getPassword());
+    String newPassword = ChangesUpdates.changeData(user.passwordUser(), savedUser.passwordUser());
     String newEmail = ChangesUpdates.changeData(user.getEmail(), savedUser.getEmail());
     String newFirstSurname = ChangesUpdates.changeData(user.getFirstSurname(), savedUser.getFirstSurname());
     StudentModel newStudent = ChangesUpdates.changeData(user.getStudent(), savedUser.getStudent());
@@ -73,7 +82,7 @@ public class UserService {
   public ObjectId verifyExistPassword (UserModel user) {
     UserModel userByDocumentId = this.getUserByDocumentId(user.getDocumentId());
 
-    if (userByDocumentId != null && userByDocumentId.getPassword() == null) {
+    if (userByDocumentId != null && userByDocumentId.passwordUser() == null) {
       return userByDocumentId.getId();
     }
     return user.getId();
@@ -89,7 +98,7 @@ public class UserService {
     UserModel userByEmail = this.getUserByEmail(user.getEmail());
     UserModel userByDocumentId = this.getUserByDocumentId(user.getDocumentId());
 
-    return (userByEmail == null || userByEmail.getPassword() == null) && (userByDocumentId == null || userByDocumentId.getPassword() == null);
+    return (userByEmail == null || userByEmail.passwordUser() == null) && (userByDocumentId == null || userByDocumentId.passwordUser() == null);
   }
 
   public List<UserModel> getUserStudentsAvailables () {
