@@ -119,9 +119,13 @@ public class StudentService {
     if (savedStudent == null) {
       return null;
     }
-    savedStudent.setDenied(student.isDenied());
+    student.setId(savedStudent.getId());
+    student.setRegisterNumber(savedStudent.getRegisterNumber());
+    student.setMiddleName(savedStudent.getMiddleName());
+    student.setLastSurname(savedStudent.getLastSurname());
+    student.setPhone(savedStudent.getPhone());
 
-    return studentRepository.save(savedStudent);
+    return studentRepository.save(student);
   }
 
   public StudentModel deleteStudentId(ObjectId id) {
