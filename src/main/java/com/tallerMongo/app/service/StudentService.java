@@ -119,6 +119,7 @@ public class StudentService {
     if (savedStudent == null) {
       return null;
     }
+
     student.setId(savedStudent.getId());
     student.setRegisterNumber(savedStudent.getRegisterNumber());
     student.setMiddleName(savedStudent.getMiddleName());
@@ -136,7 +137,7 @@ public class StudentService {
 
   public StudentModel updatePersonalInfo(ObjectId id, StudentModel student) {
     StudentModel savedStudent = this.getStudentById(id);
-    boolean personalData = savedStudent.personalInfoComplete();
+    boolean personalData = student.personalInfoComplete();
     if (!personalData) {
       return null;
     }
