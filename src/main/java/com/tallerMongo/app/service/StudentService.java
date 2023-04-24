@@ -100,7 +100,7 @@ public class StudentService {
 
   public StudentModel updateStudent (ObjectId id, StudentModel student) {
     StudentModel savedStudent = this.getStudentById(id);
-    boolean allData = savedStudent.allDataComplete();
+    boolean allData = student.allDataComplete();
     if (!allData) {
       return null;
     }
@@ -120,13 +120,9 @@ public class StudentService {
       return null;
     }
 
-    student.setId(savedStudent.getId());
-    student.setRegisterNumber(savedStudent.getRegisterNumber());
-    student.setMiddleName(savedStudent.getMiddleName());
-    student.setLastSurname(savedStudent.getLastSurname());
-    student.setPhone(savedStudent.getPhone());
+    savedStudent.setDenied(student.isDenied());
 
-    return studentRepository.save(student);
+    return studentRepository.save(savedStudent);
   }
 
   public StudentModel deleteStudentId(ObjectId id) {
